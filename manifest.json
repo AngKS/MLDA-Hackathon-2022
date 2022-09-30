@@ -1,0 +1,25 @@
+{
+  "short_name": "Good Vibes",
+  "name": "Good Vibes Chat Application",
+  "icons": [
+    {
+      "src": "logo-rounded.png",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "logo-rounded.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "logo-rounded.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
