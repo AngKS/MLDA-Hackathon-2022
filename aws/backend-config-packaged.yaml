@@ -1,0 +1,46 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: MLDA Hackathon 2022 - Backend Resources
+Parameters:
+  AppName:
+    Type: String
+    Description: Name of Application
+    Default: Good-Vibes
+Resources:
+  ServerWebSocketApi:
+    Type: AWS::ApiGatewayV2::Api
+    Properties:
+      ProtocolType: WEBSOCKET
+      RouteSelectionExpression: $request.body.action
+    Metadata:
+      SamResourceId: ServerWebSocketApi
+  TestRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId:
+        Ref: ServerWebSocketApi
+      RouteKey: test
+      Target:
+        Fn::Sub: integrations/${TestLambdaIntegration}
+    Metadata:
+      SamResourceId: TestRoute
+  GoodMainServer:
+    Type: AWS::Serverless:Function
+    Properties:
+      FunctionName:
+        Fn::Join:
+        - '-'
+        - - Ref: AppName
+          - Main-Server
+      Description: The core server of the application
+      Timeout: 30
+      CodeUri: ../back-end/mainCallback
+      Handler: app.goodVibesMainHandler
+      Events:
+        TestEndpoint:
+          Type: Api
+          Properties:
+            Path: /hello
+            Method: GET
+    Metadata:
+      SamResourceId: GoodMainServer
