@@ -14,11 +14,17 @@ Parameters:
     Description: "Deployed Region of Application stack"
     Default: ap-southeast-1
 
+  ChatbotEventStoreName:
+    Type: String
+    Default: Good-Vibes-user-connections
+
+
+Globals:
+  Function:
+    Runtime: nodejs16.x
+    MemorySize: 128
 
 Resources:
-
-  # ========== Policies ==========
-  # ========== Roles ==========
   # ========== API Gateway =================
   ServerWebSocketApi:
     Type: AWS::ApiGatewayV2::Api
@@ -33,7 +39,7 @@ Resources:
   ConnectRoute:
     Type: AWS::ApiGatewayV2::Route
     Properties:
-      ApiId: !Ref ServerWebSocketApi:
+      ApiId: !Ref ServerWebSocketApi
       RouteKey: $connect
       AuthorizationType: NONE
       OperationName: ConnectRoute
@@ -45,7 +51,7 @@ Resources:
       ApiId: !Ref ServerWebSocketApi
       Description: User Chat connection integration
       IntegrationType: AWS_PROXY
-      IntegrationUri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OnConnectFunction.Arn}/invocations
+      IntegrationUri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${SendMessageFunction.Arn}/invocations
 
   DisconnectRoute:
     Type: AWS::ApiGatewayV2::Route
@@ -73,16 +79,61 @@ Resources:
         !Join ["-", [!Ref AppName, "Main-Server"]]
 
       Description: "The core server of the application"
-      Timeout: 30
       CodeUri: ../back-end/mainCallback
       Handler: app.goodVibesMainHandler
-
+      Policies:
+        - Statement:
+            - Effect: Allow
+              Action:
+                - 'execute-api:ManageConnections'            
+                - logs:CreateLogGroup
+                - logs:CreateLogStream
+                - logs:PutLogEvents
+                - "dynamodb:GetItem"
+                - "dynamodb:DeleteItem"
+                - "dynamodb:PutItem"
+                - "dynamodb:Scan"
+                - "dynamodb:Query"
+                - "dynamodb:UpdateItem"
+                - "dynamodb:BatchWriteItem"
+                - "dynamodb:BatchGetItem"
+                - "dynamodb:DescribeTable"
+                - "dynamodb:ConditionCheckItem"
+              Resource:
+                - !Sub 'arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ServerWebSocketApi}/*'
+                - !Sub "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${ChatbotEventStoreName}"
       Events:
         TestEndpoint:
           Type: Api
           Properties:
             Path: /hello
             Method: GET
+
+  SendMessagePermission:
+    Type: AWS::Lambda::Permission
+    DependsOn:
+      - ServerWebSocketApi
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref SendMessageFunction
+      Principal: apigateway.amazonaws.com
+
+  Deployment:
+    Type: AWS::ApiGatewayV2::Deployment
+    DependsOn:
+    - ConnectRoute
+    - SendRoute
+    - DisconnectRoute
+    Properties:
+      ApiId: !Ref ServerWebSocketApi
+  Stage:
+    Type: AWS::ApiGatewayV2::Stage
+    Properties:
+      StageName: Prod
+      Description: Prod Stage
+      DeploymentId: !Ref Deployment
+      ApiId: !Ref ServerWebSocketApi
+
   
   HateSpeechModelFunction:
     Type: AWS::Serverless::Function
