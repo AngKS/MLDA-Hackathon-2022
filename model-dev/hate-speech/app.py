@@ -1,23 +1,26 @@
+import copy
+from typing import Union
 import torch
-import torch.nn.functional as F
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 import json
 
 def hate_speech_inference(
-        query: str,
+        query: Union[str, list],
         tokenizer=AutoTokenizer.from_pretrained("unitary/toxic-bert"),
         model=AutoModelForSequenceClassification.from_pretrained("unitary/toxic-bert")
-    ):
+    ) -> dict:
     id2label = model.config.id2label
     # disables pytorch's automatic differentiation engine
     with torch.no_grad():
-        tokens = tokenizer(query, return_tensors='pt') # convert text to token i.e. word to numbers
+        tokens = tokenizer(query, return_tensors='pt', padding=True, truncation=True) # convert text to token i.e. word to numbers
         logits = model(**tokens).logits # run inference
-        proba = F.softmax(logits, dim=1) # softmax probabilities
+        proba = torch.sigmoid(logits) # sigmoid probabilites
+        pred_class = copy.deepcopy(logits)
+        pred_class = pred_class.apply_(lambda x: 1 if x >= 0.5 else 0) # predict class as one-hot encodings
         return dict(
             proba = proba,
             id2label = id2label,
-            pred_class = id2label[proba.argmax().item()]
+            pred_class = pred_class
         )
 
 def handler(event, context):
