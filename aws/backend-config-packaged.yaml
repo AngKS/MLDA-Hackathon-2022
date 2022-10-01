@@ -10,6 +10,9 @@ Parameters:
     Type: String
     Description: Deployed Region of Application stack
     Default: ap-southeast-1
+  ChatbotEventStoreName:
+    Type: String
+    Default: Good-Vibes-user-connections
 Globals:
   Function:
     Runtime: nodejs16.x
@@ -112,15 +115,29 @@ Resources:
         - - Ref: AppName
           - Main-Server
       Description: The core server of the application
-      CodeUri: s3://mlda-hackathon-good-vibes-app/cloudformation/mlda-hackathon-good-vibes-app/746a093b9e6b5921e17921466c30e6d5
+      CodeUri: s3://mlda-hackathon-good-vibes-app/cloudformation/mlda-hackathon-good-vibes-app/cc5c75f42792a74a5b6265af6b3cd580
       Handler: app.goodVibesMainHandler
       Policies:
       - Statement:
         - Effect: Allow
           Action:
           - execute-api:ManageConnections
+          - logs:CreateLogGroup
+          - logs:CreateLogStream
+          - logs:PutLogEvents
+          - dynamodb:GetItem
+          - dynamodb:DeleteItem
+          - dynamodb:PutItem
+          - dynamodb:Scan
+          - dynamodb:Query
+          - dynamodb:UpdateItem
+          - dynamodb:BatchWriteItem
+          - dynamodb:BatchGetItem
+          - dynamodb:DescribeTable
+          - dynamodb:ConditionCheckItem
           Resource:
           - Fn::Sub: arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ServerWebSocketApi}/*
+          - Fn::Sub: arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${ChatbotEventStoreName}
       Events:
         TestEndpoint:
           Type: Api

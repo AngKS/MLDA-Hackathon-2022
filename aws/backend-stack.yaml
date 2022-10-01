@@ -14,6 +14,10 @@ Parameters:
     Description: "Deployed Region of Application stack"
     Default: ap-southeast-1
 
+  ChatbotEventStoreName:
+    Type: String
+    Default: Good-Vibes-user-connections
+
 
 Globals:
   Function:
@@ -100,9 +104,23 @@ Resources:
         - Statement:
             - Effect: Allow
               Action:
-                - 'execute-api:ManageConnections'
+                - 'execute-api:ManageConnections'            
+                - logs:CreateLogGroup
+                - logs:CreateLogStream
+                - logs:PutLogEvents
+                - "dynamodb:GetItem"
+                - "dynamodb:DeleteItem"
+                - "dynamodb:PutItem"
+                - "dynamodb:Scan"
+                - "dynamodb:Query"
+                - "dynamodb:UpdateItem"
+                - "dynamodb:BatchWriteItem"
+                - "dynamodb:BatchGetItem"
+                - "dynamodb:DescribeTable"
+                - "dynamodb:ConditionCheckItem"
               Resource:
                 - !Sub 'arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ServerWebSocketApi}/*'
+                - !Sub "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${ChatbotEventStoreName}"
       Events:
         TestEndpoint:
           Type: Api
