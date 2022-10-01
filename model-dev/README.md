@@ -39,9 +39,7 @@ Non-trainable params: 0
 ================================================================================
 ```
 
-The pre-trained weights is taken from Laura et al and the Unitary team [2] ()[https://huggingface.co/unitary/toxic-bert]
-
-Laura et al trained a bert
+The pre-trained weights is taken from Laura et al and the Unitary team [2] Refer to the (HuggingFace repository)[https://huggingface.co/unitary/toxic-bert] for the model's source code.
 
 | Challenge | Year | Goal | Original Data Source | Detoxify Model Name | Top Kaggle Leaderboard Score* | Detoxify Score* |
 |-|-|-|-|-|-|-|
