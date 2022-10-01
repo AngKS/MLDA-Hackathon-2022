@@ -31,3 +31,9 @@ settings/
 .idea
 /Sentiment/Data/review/
 /Sentiment/Data/formatted/
+/Sentiment/Data/Twitter/
+/Sentiment/Data/consolidated/
+/Sentiment/Data/by_category/
+/Sentiment/model_saved/
+/Sentiment/model_checkpoint/
+/Sentiment/deployment/
