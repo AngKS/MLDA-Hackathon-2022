@@ -1,3 +1,4 @@
+import copy
 from typing import Union
 import torch
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
@@ -13,7 +14,8 @@ def hate_speech_inference(
         tokens = tokenizer(query, return_tensors='pt', padding=True, truncation=True) # convert text to token i.e. word to numbers
         logits = model(**tokens).logits # run inference
         proba = torch.sigmoid(logits) # sigmoid probabilites
-        pred_class = proba.apply_(lambda x: 1 if x >= 0.5 else 0) # predict class as one-hot encodings
+        pred_class = copy.deepcopy(logits)
+        pred_class = pred_class.apply_(lambda x: 1 if x >= 0.5 else 0) # predict class as one-hot encodings
         return dict(
             proba = proba,
             id2label = id2label,
