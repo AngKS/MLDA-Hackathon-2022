@@ -68,7 +68,7 @@ Resources:
       ApiId: !Ref ServerWebSocketApi
       Description: User chat disconnect integration
       IntegrationType: AWS_PROXY
-      Integration_Uri
+      IntegrationUri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${SendMessageFunction.Arn}/invocations
 
 
   # ========== Lambdas =================
@@ -135,17 +135,17 @@ Resources:
       ApiId: !Ref ServerWebSocketApi
 
   
-  HateSpeechModelFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      CodeUri: ../model-dev/hate-speech
-      Handler: app.handler
-      Runtime: python3.9
-      Architectures:
-        - x86_64
-      Events:
-        InferenceEndpoint:
-          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
-          Properties:
-            Path: /predict
-            Method: post
+  # HateSpeechModelFunction:
+  #   Type: AWS::Serverless::Function
+  #   Properties:
+  #     CodeUri: ../model-dev/hate-speech
+  #     Handler: app.handler
+  #     Runtime: python3.9
+  #     Architectures:
+  #       - x86_64
+  #     Events:
+  #       InferenceEndpoint:
+  #         Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+  #         Properties:
+  #           Path: /predict
+  #           Method: post

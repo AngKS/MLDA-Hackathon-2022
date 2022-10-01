@@ -15,7 +15,6 @@ Parameters:
     Default: Good-Vibes-user-connections
 Globals:
   Function:
-    Runtime: nodejs16.x
     MemorySize: 128
 Resources:
   ServerWebSocketApi:
@@ -80,34 +79,8 @@ Resources:
         Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${SendMessageFunction.Arn}/invocations
     Metadata:
       SamResourceId: DisconnectIntegration
-  SendRoute:
-    Type: AWS::ApiGatewayV2::Route
-    Properties:
-      ApiId:
-        Ref: ServerWebSocketApi
-      RouteKey: sendMessage
-      AuthorizationType: NONE
-      OperationName: SendMessageRoute
-      Target:
-        Fn::Join:
-        - /
-        - - integrations
-          - Ref: SendMessageIntegration
-    Metadata:
-      SamResourceId: SendRoute
-  SendMessageIntegration:
-    Type: AWS::ApiGatewayV2::Integration
-    Properties:
-      ApiId:
-        Ref: ServerWebSocketApi
-      Description: Send message to socket connection
-      IntegrationType: AWS_PROXY
-      IntegrationUri:
-        Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${SendMessageFunction.Arn}/invocations
-    Metadata:
-      SamResourceId: SendMessageIntegration
-  SendMessageFunction:
-    Type: AWS::Serverless::Function
+  GoodMainServer:
+    Type: AWS::Serverless:Function
     Properties:
       FunctionName:
         Fn::Join:
@@ -115,8 +88,9 @@ Resources:
         - - Ref: AppName
           - Main-Server
       Description: The core server of the application
-      CodeUri: s3://mlda-hackathon-good-vibes-app/cloudformation/mlda-hackathon-good-vibes-app/78c49ca1c677224630bafbc506fff54d
+      CodeUri: ../back-end/mainCallback
       Handler: app.goodVibesMainHandler
+      Runtime: nodejs16.x
       Policies:
       - Statement:
         - Effect: Allow
@@ -145,7 +119,7 @@ Resources:
             Path: /hello
             Method: GET
     Metadata:
-      SamResourceId: SendMessageFunction
+      SamResourceId: GoodMainServer
   SendMessagePermission:
     Type: AWS::Lambda::Permission
     DependsOn:
