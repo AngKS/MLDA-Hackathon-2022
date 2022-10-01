@@ -29,3 +29,5 @@ settings/
 *.DS_Store/
 
 .idea
+/Sentiment/Data/review/
+/Sentiment/Data/formatted/
