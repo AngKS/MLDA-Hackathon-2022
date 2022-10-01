@@ -1,6 +1,7 @@
 import torch
 import torch.nn.functional as F
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
+import json
 
 def hate_speech_inference(
         query: str,
@@ -22,7 +23,10 @@ def hate_speech_inference(
 def handler(event, context):
     try:
         json_res = json.dumps(hate_speech_inference(event['text']))
-        return {'statusCode': 200, 'json': json_res}
+        return {
+            'statusCode': 200, 
+            'result': json_res
+        }
     except Exception as e:
         res = {"statusCode": 404, "body": e}
         return res
