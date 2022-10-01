@@ -6,26 +6,105 @@ Parameters:
     Type: String
     Description: Name of Application
     Default: Good-Vibes
+  Region:
+    Type: String
+    Description: Deployed Region of Application stack
+    Default: ap-southeast-1
+Globals:
+  Function:
+    Runtime: nodejs16.x
+    MemorySize: 128
 Resources:
   ServerWebSocketApi:
     Type: AWS::ApiGatewayV2::Api
     Properties:
+      Name:
+        Fn::Sub: ${AppName}-WebSocket-Endpoint
       ProtocolType: WEBSOCKET
       RouteSelectionExpression: $request.body.action
+      ApiKeySelectionExpression: $request.header.x-api-key
     Metadata:
       SamResourceId: ServerWebSocketApi
-  TestRoute:
+  ConnectRoute:
     Type: AWS::ApiGatewayV2::Route
     Properties:
       ApiId:
         Ref: ServerWebSocketApi
-      RouteKey: test
+      RouteKey: $connect
+      AuthorizationType: NONE
+      OperationName: ConnectRoute
       Target:
-        Fn::Sub: integrations/${TestLambdaIntegration}
+        Fn::Join:
+        - /
+        - - integrations
+          - Ref: ConnectIntegration
     Metadata:
-      SamResourceId: TestRoute
-  GoodMainServer:
-    Type: AWS::Serverless:Function
+      SamResourceId: ConnectRoute
+  ConnectIntegration:
+    Type: AWS::ApiGatewayV2::Integration
+    Properties:
+      ApiId:
+        Ref: ServerWebSocketApi
+      Description: User Chat connection integration
+      IntegrationType: AWS_PROXY
+      IntegrationUri:
+        Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${SendMessageFunction.Arn}/invocations
+    Metadata:
+      SamResourceId: ConnectIntegration
+  DisconnectRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId:
+        Ref: ServerWebSocketApi
+      RouteKey: $disconnect
+      AuthorizationType: NONE
+      OperationName: DisconnectRoute
+      Target:
+        Fn::Join:
+        - /
+        - - integrations
+          - Ref: DisconnectIntegration
+    Metadata:
+      SamResourceId: DisconnectRoute
+  DisconnectIntegration:
+    Type: AWS::ApiGatewayV2::Integration
+    Properties:
+      ApiId:
+        Ref: ServerWebSocketApi
+      Description: User chat disconnect integration
+      IntegrationType: AWS_PROXY
+      IntegrationUri:
+        Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${SendMessageFunction.Arn}/invocations
+    Metadata:
+      SamResourceId: DisconnectIntegration
+  SendRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId:
+        Ref: ServerWebSocketApi
+      RouteKey: sendMessage
+      AuthorizationType: NONE
+      OperationName: SendMessageRoute
+      Target:
+        Fn::Join:
+        - /
+        - - integrations
+          - Ref: SendMessageIntegration
+    Metadata:
+      SamResourceId: SendRoute
+  SendMessageIntegration:
+    Type: AWS::ApiGatewayV2::Integration
+    Properties:
+      ApiId:
+        Ref: ServerWebSocketApi
+      Description: Send message to socket connection
+      IntegrationType: AWS_PROXY
+      IntegrationUri:
+        Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${SendMessageFunction.Arn}/invocations
+    Metadata:
+      SamResourceId: SendMessageIntegration
+  SendMessageFunction:
+    Type: AWS::Serverless::Function
     Properties:
       FunctionName:
         Fn::Join:
@@ -33,9 +112,15 @@ Resources:
         - - Ref: AppName
           - Main-Server
       Description: The core server of the application
-      Timeout: 30
-      CodeUri: ../back-end/mainCallback
+      CodeUri: s3://mlda-hackathon-good-vibes-app/cloudformation/mlda-hackathon-good-vibes-app/746a093b9e6b5921e17921466c30e6d5
       Handler: app.goodVibesMainHandler
+      Policies:
+      - Statement:
+        - Effect: Allow
+          Action:
+          - execute-api:ManageConnections
+          Resource:
+          - Fn::Sub: arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ServerWebSocketApi}/*
       Events:
         TestEndpoint:
           Type: Api
@@ -43,4 +128,37 @@ Resources:
             Path: /hello
             Method: GET
     Metadata:
-      SamResourceId: GoodMainServer
+      SamResourceId: SendMessageFunction
+  SendMessagePermission:
+    Type: AWS::Lambda::Permission
+    DependsOn:
+    - ServerWebSocketApi
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Ref: SendMessageFunction
+      Principal: apigateway.amazonaws.com
+    Metadata:
+      SamResourceId: SendMessagePermission
+  Deployment:
+    Type: AWS::ApiGatewayV2::Deployment
+    DependsOn:
+    - ConnectRoute
+    - SendRoute
+    - DisconnectRoute
+    Properties:
+      ApiId:
+        Ref: ServerWebSocketApi
+    Metadata:
+      SamResourceId: Deployment
+  Stage:
+    Type: AWS::ApiGatewayV2::Stage
+    Properties:
+      StageName: Prod
+      Description: Prod Stage
+      DeploymentId:
+        Ref: Deployment
+      ApiId:
+        Ref: ServerWebSocketApi
+    Metadata:
+      SamResourceId: Stage
