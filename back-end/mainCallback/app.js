@@ -28,6 +28,27 @@ module.exports.goodVibesMainHandler = (event, context, callback) => {
 
     const connectionId = event.requestContext.connectionId;
     addConnectionId(connectionId).then(() => {
-        callback(null, { statusCode: 200, message: "Connected!" })
+        var response
+        
+        if (event.requestContext.routeKey === ROUTE_KEY_CONNECT) {
+            response = {
+                statusCode: 200,
+                body: JSON.stringify({ message: 'Connected!' }),
+            };
+        }
+        else if (event.requestContext.routeKey === ROUTE_KEY_DISCONNECT) {
+            response = {
+                statusCode: 200,
+                body: JSON.stringify({ message: 'Disconnected!' }),
+            };
+        }
+        else {
+            response = {
+                statusCode: 200,
+                body: JSON.stringify({ message: 'Unknown event type!' }),
+            };
+        }
+
+        callback(null, response);
     });
 }

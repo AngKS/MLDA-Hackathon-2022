@@ -115,7 +115,7 @@ Resources:
         - - Ref: AppName
           - Main-Server
       Description: The core server of the application
-      CodeUri: s3://mlda-hackathon-good-vibes-app/cloudformation/mlda-hackathon-good-vibes-app/cc5c75f42792a74a5b6265af6b3cd580
+      CodeUri: s3://mlda-hackathon-good-vibes-app/cloudformation/mlda-hackathon-good-vibes-app/78c49ca1c677224630bafbc506fff54d
       Handler: app.goodVibesMainHandler
       Policies:
       - Statement:
