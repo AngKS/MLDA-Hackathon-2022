@@ -23,7 +23,6 @@ This is a repository for the NTU MLDA 2022 Hackathon Project. The project is a w
 
 ## Hosted locations
 - [Web Application](https://good-vibes-chat.netlify.app/)
-- [Socket Server (NOT DEPLOYED!!!)]()
 
 ## Getting Started
 
