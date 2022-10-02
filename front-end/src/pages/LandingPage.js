@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { SelectMood } from "../components/landing/Mood";
-import GIF from "../assets/people-chatting.gif";
+import GIF from "../assets/scrolling.gif";
 import Button from "@mui/material/Button";
 import "../styles/landing.css";
 import { Link } from 'react-router-dom';
@@ -75,7 +75,7 @@ function LandingPage({userMood, username, setUserMood, setUsername}) {
 
                 </div>
                 <div class="row-span-1 col-span-1">
-                    <img class="chat_img mt-8" src={GIF} alt="gif" />
+                    <img class="chat_img" src={GIF} alt="gif" />
                 </div>
             </div>
         </div>

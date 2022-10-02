@@ -10,6 +10,10 @@ import { Avatar, Divider, Tooltip } from 'antd';
 import io from 'socket.io-client'
 import queryString from 'query-string'
 
+import loadingGIF from '../assets/loading.gif'
+
+import { LoadingOutlined } from '@ant-design/icons';
+import { Spin } from 'antd';
 
 let socket;
 
@@ -36,6 +40,8 @@ function ChatPage2() {
 
 
     useEffect(() => {
+        setLoading(true)
+
         const { qs_name, qs_mood } = queryString.parse(window.location.search)
         setName(qs_name)
         console.log(window.location.search)
@@ -77,6 +83,7 @@ function ChatPage2() {
         return () => {
             socket.emit('end')
             socket.off()
+            setLoading(false)
         }
 
     }, [])
@@ -107,16 +114,29 @@ function ChatPage2() {
 
     // auto scroll to bottom of div when new message is added
     useEffect(() => {
-        const chatDiv = document.getElementById('chatArea')
-        chatDiv.scrollTop = chatDiv.scrollHeight
+        if (loading === false) {
+            const chatDiv = document.getElementById('chatArea')
+            chatDiv.scrollTop = chatDiv.scrollHeight
+        }
+
     }, [chat])
 
+    const antIcon = (
+        <LoadingOutlined
+          style={{
+            fontSize: 24,
+          }}
+          spin
+        />
+      );
+      
 
 
     return (
         <div class='h-screen'>
             <TopBar current_page='Chat' />
-            <div className="w-3/5 mx-auto flex gap-2 justify-between h-[90%]">
+
+            {loading === false && <div className="w-3/5 mx-auto flex gap-2 justify-between h-[90%]">
                 <div className=''>
 
                 </div>
@@ -180,7 +200,16 @@ function ChatPage2() {
                     </div>
 
                 </div>
-            </div>
+            </div>}
+
+            {loading === true && 
+                <div className='loading flex justify-center'>
+                    <div>
+                        <img className="" src={loadingGIF} alt="gif" />
+                        
+                    </div>
+                </div>
+            }
 
         </div>
     )
