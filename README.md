@@ -40,6 +40,9 @@ This is an example of how you may start on setting up this project on a local en
    ```sh
    npm install
    ```
+   
+## Model Deployment and Model Weights (Sentiment)
+ - [Click me to learn more](https://drive.google.com/drive/folders/1npsnXKZCRzuDmLmstCsG_aSh2oBFN8OQ?usp=sharing)
 
 ## Acknowledgement
 
