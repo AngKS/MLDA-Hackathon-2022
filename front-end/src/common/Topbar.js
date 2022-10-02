@@ -15,7 +15,7 @@ function TopBar({current_page}) {
     }, [])
 
     return (
-        <div className="px-[10%] h-70 flex content-center">
+        <div className="w-3/5 mx-auto h-70 flex content-center">
             <div className="w-1/6 h-full items-center ">
                 <Link to="/" variant="outlined">
                     <button><img src={logo} alt="LOGO" className="logo" /></button></Link>

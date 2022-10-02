@@ -7,10 +7,10 @@ function EnterName({ setUserName }) {
     }
 
     return (
-        <div class="grid grid-rows-2 grid-flow-col">
+        <div class="grid grid-rows-2 grid-flow-col pt-7">
             <span class="row-span-1 ...">Enter Name</span>
             <div class="row-span-1 ...">
-                <TextField variant="outlined" required onChange={handleChange}/>
+                <TextField size="small" variant="outlined" required onChange={handleChange}/>
             </div>
         </div>
     )

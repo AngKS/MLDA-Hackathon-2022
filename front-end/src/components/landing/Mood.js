@@ -18,17 +18,21 @@ function SelectMood({ setSelectedMood }) {
         },
     }));
 
-    const handleClickGray = () => {
+    const handleClickGray = (event) => {
         setSelectedMood("gray");
+        event.target.style.boxShadow = "0 0 11px rgba(33,33,33,.5)";
     }
-    const handleClickBlue = () => {
+    const handleClickBlue = (event) => {
         setSelectedMood("blue");
+        event.target.style.boxShadow = "0 0 11px rgba(33,33,33,.5)";
     }
-    const handleClickYellow = () => {
+    const handleClickYellow = (event) => {
         setSelectedMood("yellow");
+        event.target.style.boxShadow = "0 0 11px rgba(33,33,33,.5)";
     }
-    const handleClickPurple = () => {
+    const handleClickPurple = (event) => {
         setSelectedMood("purple");
+        event.target.style.boxShadow = "0 0 11px rgba(33,33,33,.5)";
     }
 
     return (
