@@ -26,9 +26,11 @@ function ChatPage() {
         event.preventDefault()
         if (inputTxt) {
             socket.emit('sendMessage', inputTxt, () => {
+                setChat([...chat, { text: inputTxt, user: name }])
                 setInputText('')
 
             })
+
         }
     }
 
@@ -38,7 +40,6 @@ function ChatPage() {
     useEffect(() => {
         const { qs_name, qs_mood } = queryString.parse(window.location.search)
         setName(qs_name)
-        console.log(window.location.search)
         let connectionOptions = {
             "force new connection": true,
             "reconnectionAttempts": "Infinity",
@@ -54,7 +55,6 @@ function ChatPage() {
             )
         })
 
-        console.log("Connecting to host", qs_name, qs_mood)
 
         socket.emit('join', { name: qs_name, mood: qs_mood }, () => { })
         
@@ -63,10 +63,10 @@ function ChatPage() {
         socket.on('roomData', (data)=> {
             
             // get other user
-            let secondPerson = data.users.filter((user) => user.name !== qs_name)
-            console.log(secondPerson.name)
-            secondPerson = secondPerson.name ? secondPerson.name : 'Other User'
-            setOtherUser(secondPerson)
+            
+            let otherUser = data.users.filter((user) => user.name !== qs_name)
+            setOtherUser(otherUser[0].name)
+
             setRoom(data.room)
 
         })
@@ -81,13 +81,18 @@ function ChatPage() {
 
     }, [])
 
+    
+
+
 
     useEffect(() => {
         socket.on('message', (message) => {
             if (message.user !== name) {
+                setChat([...chat, message])
+            }
+            if (message.user !== name && message.user !== "admin"){
                 setOtherUser(message.user)
             }
-            setChat([...chat, message])
         })
     }, [chat])
 
@@ -95,6 +100,11 @@ function ChatPage() {
     const handleKeyPress = (event) => {
         if (event.key === 'Enter') {
             sendMessage(event)
+        }
+        else{
+            // focus on input field
+            document.getElementById('chatField').focus()
+
         }
     }
     // add event listener for enter key press
@@ -133,7 +143,6 @@ function ChatPage() {
                         <div className="flex flex-col gap-2">
                             <div className="flex gap-2">
                                 <p className='font-bold text-2xl' >{otherUser}</p>
-
                             </div>
                             <span>Chat ID: <span className="px-2 py-1.5 bg-slate-100 rounded-md font-mono text-sm">{room}</span></span>
                         </div>
@@ -164,7 +173,7 @@ function ChatPage() {
 
 
                     <div className='flex gap-3 mx-auto inputArea w-full'>
-                        <input type='text' className='appearance-none textBox'
+                        <input id="chatField" type='text' className='appearance-none textBox'
                             onChange={(e) => setInputText(e.target.value)}
                             placeholder='Say something'
                             value={inputTxt}
