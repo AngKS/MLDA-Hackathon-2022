@@ -4,6 +4,8 @@ import { EnterName } from "../components/landing/Name";
 import GIF from "../assets/people-chatting.gif";
 import Button from "@mui/material/Button";
 import "../styles/landing.css";
+import { Link } from 'react-router-dom';
+import IMAGE from "../assets/LOGO.png";
 
 function LandingPage() {
     const [userName, setUserName] = useState(null);
@@ -29,6 +31,7 @@ function LandingPage() {
     return (
         <div class="grid grid-rows-1 grid-flow-col gap-4">
             <div class="row-span-1 col-span-1">
+            <img src={IMAGE} alt="LOGO" className="logo" />
                 <div class="grid grid-rows-3 grid-flow-col gap-4">
                     <div class="row-span-1 ...">
                         <EnterName setUserName={setUserName} />
@@ -39,7 +42,7 @@ function LandingPage() {
                         {isMoodVisible ? <span style={{ color: 'red' }}>Please select a mood</span> : <span></span>}
                     </div>
                     <div class="row-span-1 ...">
-                        <Button variant="outlined" onClick={handleSubmit}>Enter Chat Room</Button>
+                            <Button component={Link} to="/chatroom" variant="outlined" onClick={handleSubmit}>Enter Chat Room</Button>
                     </div>
                 </div>
             </div>
