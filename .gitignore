@@ -40,3 +40,4 @@ settings/
 /Sentiment/aclImdb/
 Sentiment/Data/IMDB Dataset.csv
 *.txt
+Sentiment/aclImdb_v1.tar.gz
