@@ -25,25 +25,27 @@ function SuggestionsBar() {
             words.push(suggestedWords[Math.floor(Math.random() * suggestedWords.length)])
         }
         return words
+
+        
     }
 
 
     return (
-        <div className="w-full max-w-full bg-gray-200 h-fit p-2">
+        <div>
             <h3 className="text-lg font-bold">Suggestions:</h3>
-            <div className="flex w-full max-w-full gap-2 overflow-x-scroll">
-                {
-                    suggestedWords.map((item) => {
-                        return (
-                            <h3 className="px-2 py-1 whitespace-nowrap min-w-fit h-fit">
-                                {item}
-                            </h3>
-                        )
-                    })
-                }
-
+            <div class="w-full max-w-full bg-gray-200 h-fit overflow-auto p-2">
+                <div class="flex flex-nowrap gap-2">
+                    {
+                        suggestedWords.map((item) => {
+                            return (
+                                    <h3 className="px-2 py-1 min-w-fit min-h-fit flex-none hover:bg-purple-100 hover:cursor-pointer hover:border-purple-300 border border-transparent rounded-lg" >
+                                        {item}
+                                    </h3>
+                            )
+                        })
+                    }
+                </div>
             </div>
-
         </div>
     )
 }
