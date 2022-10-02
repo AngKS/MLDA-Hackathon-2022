@@ -49,7 +49,7 @@ function OtherChat({text, sentiment, setpredicted}) {
 
     return (
         <div className="relative">
-            <div className='w-auto p-3 message-bubble whitespace-normal'>
+            <div className='w-auto px-3 py-2.5 message-bubble whitespace-normal'>
                 {text}
             </div>
 

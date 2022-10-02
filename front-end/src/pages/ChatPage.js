@@ -24,9 +24,10 @@ function ChatPage() {
     // const ENDPOINT = 'wss://mlda-websocket-server.herokuapp.com/'
     const ENDPOINT = 'localhost:8080'
 
-    let sendMessage = (event) => {
+    let sendMessage = async (event) => {
         event.preventDefault()
         if (inputTxt) {
+            await checkToxicity(inputTxt)
             socket.emit('sendMessage', inputTxt, () => {
                 setChat([...chat, { text: inputTxt, user: name }])
                 setInputText('')
@@ -95,28 +96,27 @@ function ChatPage() {
         let data = {
             inputs: text
         }
-        axios.post(
-            'https://api-inference.huggingface.co/models/unitary/toxic-bert',
-            {
-                headers: {
-                    'Authorization': "Bearer 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"
-                },
-                data
-                
-            })
-            .then(result => {
-                console.log(result)
-                return result
-            })
+
+        axios({
+            method: 'post',
+            url: 'https://api-inference.huggingface.co/models/unitary/toxic-bert',
+            data: data,
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': "Bearer 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"
+            }
+        }).then(result => {
+            console.log(result)
+        })
+        
     }
 
 
 
     // add enter key press
-    const handleKeyPress = async (event) => {
+    const handleKeyPress =  (event) => {
         if (event.key === 'Enter') {
 
-            await checkToxicity(inputTxt)
 
             sendMessage(event)
         }
@@ -236,7 +236,7 @@ function ChatPage() {
                         }
                     </div>
 
-                    <SuggestionsBar />
+                    <SuggestionsBar setInputText={setInputText} sendMessage={sendMessage} />
 
                     <div className='flex gap-3 mx-auto inputArea w-full'>
                         <input id="chatField" type='text' className='appearance-none textBox'

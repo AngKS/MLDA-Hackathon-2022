@@ -8,7 +8,7 @@ function MyChat({text}) {
 
     return (
         <div className="w-full flex items-center justify-end">
-            <div className='p-3 message-bubble-mine bg-green-200 whitespace-normal'>
+            <div className='px-3 py-2.5 message-bubble-mine bg-green-200 whitespace-normal'>
                 {text}
             </div>
         </div>
