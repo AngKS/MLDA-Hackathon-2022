@@ -42,12 +42,12 @@ function TopBar({ current_page }) {
                 </div>}
 
                 {currentPage === 'Rules' && <div className="text-2xl font-bold purple">
-                    <Link to="/" variant="outlined">
+                    <Link to="/chatroom2" variant="outlined">
                         <button>Rules</button></Link>
                 </div>}
 
                 {currentPage !== 'Rules' && <div className="text-2xl">
-                    <Link to="/" variant="outlined">
+                    <Link to="/chatroom2" variant="outlined">
                         <button>Rules</button></Link>
                 </div>}
                 {/* <div className="text-2xl font-semibold">Services</div> */}
