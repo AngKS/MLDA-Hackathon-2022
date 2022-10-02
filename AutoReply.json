@@ -1,0 +1,30 @@
+{
+    "Happy": [
+        "I'm happy for you!",
+        "Good to hear that!",
+        "It feels good, doesn't it?",
+        "Wow, what makes you so happy?",
+        "That's wonderful!"
+    ],
+    "Serenity": [
+        "How's life?",
+        "How are you doing?",
+        "Anything interesting going on?",
+        "I like you way of thinking.",
+        "Any tips to have a peaceful mind?"
+    ],
+    "Sad": [
+        "Are you okay?",
+        "Cheer up!",
+        "I'm here for you.",
+        "It's OK to not feel OK.",
+        "You matter to me."
+    ],
+    "Depressed": [
+        "Do you want some space?",
+        "Everything will be OK.",
+        "You're not alone.",
+        "Your story isn't over.",
+        "You're a good person."
+    ]
+}
