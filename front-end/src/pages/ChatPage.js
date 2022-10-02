@@ -1,14 +1,12 @@
 import "../styles/chatPage.css";
 import React, { useState, useEffect } from "react";
 import { TopBar } from "../common/Topbar"
-import Button from "@mui/material/Button";
-import TextField from '@mui/material/TextField';
-import { alpha, styled } from '@mui/material/styles';
 import { OtherChat } from '../components/chat/otherChat'
 import { MyChat } from "../components/chat/myChat";
 import { Avatar, Divider, Tooltip } from 'antd';
 import io from 'socket.io-client'
 import queryString from 'query-string'
+import SuggestionsBar from "../components/suggestions/SuggestionsBar";
 
 
 let socket;
@@ -34,7 +32,6 @@ function ChatPage() {
         }
     }
 
-    const [loading, setLoading] = useState(true)
 
 
     useEffect(() => {
@@ -72,8 +69,6 @@ function ChatPage() {
         })
 
 
-        // console.log(Users)
-
         return () => {
             socket.emit('end')
             socket.off()
@@ -83,16 +78,12 @@ function ChatPage() {
 
     
 
-
-
     useEffect(() => {
         socket.on('message', (message) => {
             if (message.user !== name) {
                 setChat([...chat, message])
             }
-            if (message.user !== name && message.user !== "admin"){
-                setOtherUser(message.user)
-            }
+
         })
     }, [chat])
 
@@ -121,17 +112,40 @@ function ChatPage() {
         chatDiv.scrollTop = chatDiv.scrollHeight
     }, [chat])
 
+    // when user leaves chat room; navagate to home page
+
+    useEffect(() => {
+        window.addEventListener('beforeunload', (event) => {
+            socket.emit('end')
+            socket.off()
+            console.log("APP CLOSED")
+            window.location.href = '/'
+        }
+        )
+
+
+    }, [])
+
+    // disable reloads
+    useEffect(() => {
+        window.addEventListener('beforeunload', (event) => {
+            event.preventDefault()
+            event.returnValue = ''
+        })
+    }, [])
+
 
 
     return (
-        <div class='h-screen'>
+        <div className='h-screen'>
             <TopBar current_page='Chat' />
             <div className="w-3/5 mx-auto flex gap-2 justify-between h-[90%]">
                 <div className=''>
 
                 </div>
-                <div className='red basis-1/3 rounded-lg p-5'>
-                    01
+                <div className='bg-purple-200 h-full w-full flex flex-col justify-end mb-5 basis-1/3 rounded-lg p-5'>
+                    
+
                 </div>
 
                 <div className='chat basis-2/3 rounded-lg p-5 flex flex-col gap-3'>
@@ -150,7 +164,7 @@ function ChatPage() {
                     </div>
 
 
-                    <div id="chatArea" className="h-full justify-end max-h-full scroll-smooth overflow-y-scroll bg-white w-full p-5 rounded-lg">
+                    <div id="chatArea" className="h-full justify-end max-h-full scroll-smooth overflow-y-scroll bg-white w-full p-5 rounded-lg ">
                         {
                             chat.map((item, index) => {
                                 if (item.user === name) {
@@ -168,9 +182,9 @@ function ChatPage() {
                                 }
                             })
                         }
-
                     </div>
 
+                    <SuggestionsBar />
 
                     <div className='flex gap-3 mx-auto inputArea w-full'>
                         <input id="chatField" type='text' className='appearance-none textBox'

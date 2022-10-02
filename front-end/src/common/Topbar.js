@@ -16,8 +16,7 @@ function TopBar({ current_page }) {
         <div className="w-3/5 mx-auto h-70 flex justify-between content-center">
             <div className="w-1/4 h-full items-center ">
                 <Link to="/" variant="outlined">
-                    <button><img src={logo} alt="LOGO" className="logo" /></button></Link>
-
+                    <button><img src={logo} alt="LOGO" className="logo w-20" /></button></Link>
             </div>
             <div></div>
             <div className="flex h-70 w-1/2 gap-20 items-center justify-end">
