@@ -23,6 +23,7 @@ body {
     background-color: rgb(241, 239, 239);
     max-width: 60%;
     margin-bottom: 10px;
+    align-items: center;
 }
 
 .message-bubble-mine {

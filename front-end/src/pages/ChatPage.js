@@ -137,7 +137,7 @@ function ChatPage() {
 
 
     return (
-        <div class='h-screen'>
+        <div className='h-screen'>
             <TopBar current_page='Chat' />
             <div className="w-3/5 mx-auto flex gap-2 justify-between h-[90%]">
                 <div className=''>
