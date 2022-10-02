@@ -29,7 +29,7 @@ def main():
     df = df.drop(columns=['index'], axis=0)
     df['count'] = 1
     df = df.dropna()
-    df = df.iloc[:1000]
+    df = df.iloc[:5000]
 
     print('Extracting values')
     review_list = df['reviewText'].values
@@ -44,7 +44,7 @@ def main():
             correct_list.append(output)
 
     df['correctedText'] = correct_list
-    df.to_json('./formatted/final_2.json')
+    df.to_json('./formatted/final_3.json')
 
 if __name__ == '__main__':
     main()
