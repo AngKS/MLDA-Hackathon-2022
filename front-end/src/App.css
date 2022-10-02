@@ -1,0 +1,35 @@
+.logo {
+    height: 70px;
+    width: 70px;
+}
+
+body {
+    /* margin: 20px auto !important; */
+    /* width: 60%; */
+}
+
+.profile img{
+    border-radius: 50%;
+    box-shadow: 2px, 2px;
+    background-color: rgb(197, 197, 197);
+}
+
+.message-bubble {
+    display: inline-block;
+    width: fit-content; 
+  /* To adjust the height as well */ 
+    height: fit-content;
+    border-radius: 15px 15px 15px 0;
+    background-color: rgb(241, 239, 239);
+    max-width: 60%;
+    margin-bottom: 10px;
+    align-items: center;
+}
+
+.message-bubble-mine {
+    display: inline-block;
+    border-radius: 15px 15px 0px 15px;
+    max-width: 60%;
+    margin-bottom: 10px;
+    justify-content: right;
+}

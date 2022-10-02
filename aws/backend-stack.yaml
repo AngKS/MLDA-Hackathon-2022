@@ -1,0 +1,85 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: MLDA Hackathon 2022 - Backend Resources
+
+Parameters:
+
+  AppName:
+    Type: String
+    Description: "Name of Application"
+    Default: Good-Vibes
+
+  Region:
+    Type: String
+    Description: "Deployed Region of Application stack"
+    Default: ap-southeast-1
+
+
+Resources:
+
+  # ========== Policies ==========
+  # ========== Roles ==========
+  # ========== API Gateway =================
+  ServerWebSocketApi:
+    Type: AWS::ApiGatewayV2::Api
+    Properties:
+      Name: !Sub ${AppName}-WebSocket-Endpoint
+      ProtocolType: WEBSOCKET
+      RouteSelectionExpression: $request.body.action
+      ApiKeySelectionExpression: $request.header.x-api-key
+  
+  # ========== Web Socket Routes ==========
+
+  ConnectRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref ServerWebSocketApi:
+      RouteKey: $connect
+      AuthorizationType: NONE
+      OperationName: ConnectRoute
+      Target: !Join ["/", ['integrations', !Ref ConnectIntegration]]
+
+  ConnectIntegration:
+    Type: AWS::ApiGatewayV2::Integration
+    Properties:
+      ApiId: !Ref ServerWebSocketApi
+      Description: User Chat connection integration
+      IntegrationType: AWS_PROXY
+      IntegrationUri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OnConnectFunction.Arn}/invocations
+
+  DisconnectRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref ServerWebSocketApi
+      RouteKey: $disconnect
+      AuthorizationType: NONE
+      OperationName: DisconnectRoute
+      Target: !Join ["/", ["integrations", !Ref DisconnectIntegration]]
+
+  DisconnectIntegration:
+    Type: AWS::ApiGatewayV2::Integration
+    Properties:
+      ApiId: !Ref ServerWebSocketApi
+      Description: User chat disconnect integration
+      IntegrationType: AWS_PROXY
+      Integration_Uri
+
+
+  # ========== Lambdas =================
+  GoodMainServer:
+    Type: AWS::Serverless:Function
+    Properties:
+      FunctionName:
+        !Join ["-", [!Ref AppName, "Main-Server"]]
+
+      Description: "The core server of the application"
+      Timeout: 30
+      CodeUri: ../back-end/mainCallback
+      Handler: app.goodVibesMainHandler
+
+      Events:
+        TestEndpoint:
+          Type: Api
+          Properties:
+            Path: /hello
+            Method: GET

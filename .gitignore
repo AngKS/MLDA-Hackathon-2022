@@ -22,7 +22,19 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+settings/
 
 # Macos
 *.DS_Store
 *.DS_Store/
+
+.idea
+/Sentiment/Data/review/
+/Sentiment/Data/formatted/
+/Sentiment/Data/Twitter/
+/Sentiment/Data/consolidated/
+/Sentiment/Data/by_category/
+/Sentiment/model_saved/
+/Sentiment/model_checkpoint/
+/Sentiment/deployment/
+heroku/node_modules

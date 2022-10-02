@@ -1,0 +1,56 @@
+.test {
+    color: red;
+    background-color: yellow;
+    font-size: 100px;
+    
+}
+
+.width-100 {
+    width: 100%;
+
+}
+
+.red {
+    background-color: red;
+
+
+}
+
+.chat {
+    background-color: #ededed;
+    /* border-width: 5px; */
+    /* border-color: #e9ecef; */
+
+}
+
+.emotion-bg {
+    background-color: #5a189a;
+    color:white;
+}
+
+.inputArea {
+    
+}
+
+.textBox {
+    -webkit-appearance: none;
+    outline: none;
+    /* margin:20px; */
+    padding:10px;
+    border-radius: 10px;
+    width:80%;
+}
+
+.sendButton {
+    background-color:#5a189a;
+    padding:9px;
+    color: white;
+    border-radius: 10px;
+    width:20%
+}
+
+.loading{
+    min-width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
