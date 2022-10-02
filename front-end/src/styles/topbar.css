@@ -1,3 +1,17 @@
 .red-back {
     background-color: red;
 }
+
+.nav-height {
+    height: 100px;
+    /* background-color:green;; */
+}
+
+.green-back {
+    background-color: green;
+    vertical-align: middle;
+}
+
+.purple {
+    color:#5a189a;
+}

@@ -1,13 +1,12 @@
 import "../styles/chatPage.css";
+import {TopBar} from "../common/Topbar"
 
 function ChatPage() {
 
     return (
         <div class='width-100'>
-        
-            <div class='container '>
+            <TopBar current_page='Chat'/>
 
-            </div>
 
 
             <p class='test'>
