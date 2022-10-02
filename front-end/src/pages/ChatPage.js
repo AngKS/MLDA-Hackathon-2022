@@ -7,6 +7,7 @@ import { Avatar, Divider, Tooltip } from 'antd';
 import io from 'socket.io-client'
 import queryString from 'query-string'
 import SuggestionsBar from "../components/suggestions/SuggestionsBar";
+import axios from 'axios'
 
 
 let socket;
@@ -16,9 +17,12 @@ function ChatPage() {
     const [inputTxt, setInputText] = useState('')
     const [chat, setChat] = useState([])
     const [name, setName] = useState(null)
-    const [room, setRoom] = useState(null)
+    const [room, setRoom] = useState("Connecting...")
     const [otherUser, setOtherUser] = useState('')
-    const ENDPOINT = 'wss://mlda-websocket-server.herokuapp.com/'
+    const [predicted, setPredicted] = useState('')
+    const [sentiment, setSentiment] = useState('')
+    // const ENDPOINT = 'wss://mlda-websocket-server.herokuapp.com/'
+    const ENDPOINT = 'localhost:8080'
 
     let sendMessage = (event) => {
         event.preventDefault()
@@ -31,7 +35,6 @@ function ChatPage() {
 
         }
     }
-
 
 
     useEffect(() => {
@@ -54,13 +57,13 @@ function ChatPage() {
 
 
         socket.emit('join', { name: qs_name, mood: qs_mood }, () => { })
-        
+
 
         // get room data
-        socket.on('roomData', (data)=> {
-            
+        socket.on('roomData', (data) => {
+
             // get other user
-            
+
             let otherUser = data.users.filter((user) => user.name !== qs_name)
             setOtherUser(otherUser[0].name)
 
@@ -76,7 +79,7 @@ function ChatPage() {
 
     }, [])
 
-    
+
 
     useEffect(() => {
         socket.on('message', (message) => {
@@ -87,12 +90,37 @@ function ChatPage() {
         })
     }, [chat])
 
+    // check for hate speech
+    let checkToxicity =  (text) => {
+        let data = {
+            inputs: text
+        }
+        axios.post(
+            'https://api-inference.huggingface.co/models/unitary/toxic-bert',
+            {
+                headers: {
+                    'Authorization': "Bearer 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"
+                },
+                data
+                
+            })
+            .then(result => {
+                console.log(result)
+                return result
+            })
+    }
+
+
+
     // add enter key press
-    const handleKeyPress = (event) => {
+    const handleKeyPress = async (event) => {
         if (event.key === 'Enter') {
+
+            await checkToxicity(inputTxt)
+
             sendMessage(event)
         }
-        else{
+        else {
             // focus on input field
             document.getElementById('chatField').focus()
 
@@ -104,7 +132,7 @@ function ChatPage() {
         return () => {
             document.removeEventListener("keydown", handleKeyPress, false);
         };
-    }, [ handleKeyPress])
+    }, [handleKeyPress])
 
     // auto scroll to bottom of div when new message is added
     useEffect(() => {
@@ -134,6 +162,29 @@ function ChatPage() {
         })
     }, [])
 
+    useEffect(() => {
+      
+    
+        if (predicted === 'Positive') {
+            let div = document.getElementById('emotionBar')
+            div.classList.add('bg-green-300')
+            div.classList.remove('bg-red-300')
+            div.classList.remove('bg-yellow-300')
+        } else if (predicted === 'Negative') {
+            let div = document.getElementById('emotionBar')
+            div.classList.add('bg-red-300')
+            div.classList.remove('bg-green-300')
+            div.classList.remove('bg-yellow-300')
+
+        } else {
+            let div = document.getElementById('emotionBar')
+            div.classList.add('bg-yellow-300')
+            div.classList.remove('bg-red-300')
+            div.classList.remove('bg-green-300')
+
+        }
+    }, [predicted])
+    
 
 
     return (
@@ -144,8 +195,9 @@ function ChatPage() {
 
                 </div>
                 <div className='bg-purple-200 h-full w-full flex flex-col justify-end mb-5 basis-1/3 rounded-lg p-5'>
-                    
-
+                    <div classname="bg-red-400 text-white w-full rounded-b-lg hover:cursor-pointer">
+                        <span>Leave Room</span>
+                    </div>
                 </div>
 
                 <div className='chat basis-2/3 rounded-lg p-5 flex flex-col gap-3'>
@@ -162,7 +214,7 @@ function ChatPage() {
                         </div>
 
                     </div>
-
+                    <div id="emotionBar" classname="w-full px-3 py-2.5 rounded-xl text-white">{predicted}</div>
 
                     <div id="chatArea" className="h-full justify-end max-h-full scroll-smooth overflow-y-scroll bg-white w-full p-5 rounded-lg ">
                         {
@@ -178,7 +230,7 @@ function ChatPage() {
                                     </div>
                                 }
                                 else {
-                                    return <OtherChat text={item.text} />
+                                    return <OtherChat text={item.text} sentiment={sentiment} setpredicted={setPredicted} />
                                 }
                             })
                         }
@@ -198,8 +250,8 @@ function ChatPage() {
                                 sendMessage(e)
                                 setInputText('')
                             }
-                            
-                            }>Send</button>
+
+                        }>Send</button>
                     </div>
 
                 </div>
