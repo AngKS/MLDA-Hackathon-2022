@@ -37,3 +37,6 @@ settings/
 /Sentiment/model_saved/
 /Sentiment/model_checkpoint/
 /Sentiment/deployment/
+/Sentiment/aclImdb/
+Sentiment/Data/IMDB Dataset.csv
+*.txt
