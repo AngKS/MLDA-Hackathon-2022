@@ -1,23 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { SelectMood } from "../components/landing/Mood";
-import { EnterName } from "../components/landing/Name";
 import GIF from "../assets/people-chatting.gif";
 import Button from "@mui/material/Button";
 import "../styles/landing.css";
 import { Link } from 'react-router-dom';
 import IMAGE from "../assets/LOGO.png";
 import { TopBar } from "../common/Topbar";
+import TextField from '@mui/material/TextField';
 
-function LandingPage() {
-    const [userName, setUserName] = useState(null);
+
+function LandingPage({userMood, username, setUserMood, setUsername}) {
     const [selectedMood, setSelectedMood] = useState(null);
     const [isNameVisible, setIsNameVisible] = useState(false);
     const [isMoodVisible, setIsMoodVisible] = useState(false);
 
+
+
     const handleSubmit = () => {
-        console.log(userName);
+        console.log(username);
         console.log(selectedMood);
-        if (userName == null) {
+        if (username == null) {
             setIsNameVisible(true);
         } else {
             setIsNameVisible(false);
@@ -33,6 +35,11 @@ function LandingPage() {
         console.log('Next Page')
     }
 
+    useEffect(() => {
+        setUserMood(selectedMood)
+    }, [selectedMood])
+    
+
     return (
         <div>
             <TopBar current_page="Chat" />
@@ -40,7 +47,14 @@ function LandingPage() {
                 <div class="row-span-1 col-span-1">
                     <div class="grid grid-rows-4 grid-flow-col gap-4">
                         <div class="row-span-1  w-full">
-                            <EnterName setUserName={setUserName} />
+                            <div class="flex flex-col pt-7 w-full gap-2">
+                                <span class="">Enter Name</span>
+                                <div class="w-full">
+                                    <TextField className="w-full" size="small" variant="outlined" required onChange={(e) => {
+                                        setUsername(e.target.value);
+                                    }} />
+                                </div>
+                            </div>
                             {isNameVisible ? <span style={{ color: 'red' }}>Please enter a name</span> : <span></span>}
                         </div>
                         <div class="row-span-1 ...">
@@ -49,13 +63,13 @@ function LandingPage() {
                         </div>
                         <div class="w-64" style={{ display: 'block' }}>
                             {selectedMood === null && <div>Please select one based on your current mood.</div>}
-                            {selectedMood === "yellow" && <div><h5 class="font-mono" style={{ color: "#FFD60A" }}>Happy</h5><p class="text-sm">Feeling enjoyable and fun? Join the conversation with others in the community to spread your happiness!</p></div>}
-                            {selectedMood === "blue" && <div><h5 class="font-mono" style={{ color: "#48CAE4" }}>Serenity</h5><p class="text-sm">Chill, calm & peaceful. Immerse yourself in the unexpected conversation with someone!</p></div>}
-                            {selectedMood === "purple" && <div><h5 class="font-mono" style={{ color: "#DEC0F1" }}>Sad</h5><p class="text-sm">Sad & bitter. Life's treating you bad today? Let the conversation heal your sadness and release you from misery!</p></div>}
-                            {selectedMood === "gray" && <div><h5 class="font-mono" style={{ color: "#808080" }}>Depressed</h5><p class="text-sm">Dissapointed? Upset? Spiritless? Join the conversation and let others cheer you up!</p></div>}
+                            {selectedMood === "Happy" && <div><h5 class="font-mono" style={{ color: "#FFD60A" }}>Happy</h5><p class="text-sm">Feeling enjoyable and fun? Join the conversation with others in the community to spread your happiness!</p></div>}
+                            {selectedMood === "Serenity" && <div><h5 class="font-mono" style={{ color: "#48CAE4" }}>Serenity</h5><p class="text-sm">Chill, calm & peaceful. Immerse yourself in the unexpected conversation with someone!</p></div>}
+                            {selectedMood === "Sad" && <div><h5 class="font-mono" style={{ color: "#DEC0F1" }}>Sad</h5><p class="text-sm">Sad & bitter. Life's treating you bad today? Let the conversation heal your sadness and release you from misery!</p></div>}
+                            {selectedMood === "Depressed" && <div><h5 class="font-mono" style={{ color: "#808080" }}>Depressed</h5><p class="text-sm">Dissapointed? Upset? Spiritless? Join the conversation and let others cheer you up!</p></div>}
                         </div>
                         <div class="row-span-1 ...">
-                            {userName && selectedMood ? <Button component={Link} to="/chatroom" variant="outlined" onClick={handleSubmit}>Enter Chat Room</Button> : <Button variant="outlined" onClick={handleSubmit}>Enter Chat Room</Button>}
+                            {username && selectedMood ? <Button component={Link} to={`/chatroom?qs_name=${username}&qs_mood=${userMood}`} variant="outlined" onClick={handleSubmit}>Enter Chat Room</Button> : <Button variant="outlined" onClick={handleSubmit}>Enter Chat Room</Button>}
                         </div>
                     </div>
 

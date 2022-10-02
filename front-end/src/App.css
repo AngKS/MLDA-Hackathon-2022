@@ -28,7 +28,6 @@ body {
 .message-bubble-mine {
     display: inline-block;
     border-radius: 15px 15px 0px 15px;
-    background-color: rgb(241, 239, 239);
     max-width: 60%;
     margin-bottom: 10px;
     justify-content: right;
