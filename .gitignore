@@ -37,3 +37,4 @@ settings/
 /Sentiment/model_saved/
 /Sentiment/model_checkpoint/
 /Sentiment/deployment/
+heroku/node_modules
