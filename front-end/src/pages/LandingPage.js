@@ -48,6 +48,7 @@ function LandingPage() {
                             {isMoodVisible ? <span style={{ color: 'red' }}>Please select a mood</span> : <span></span>}
                         </div>
                         <div class="w-64" style={{ display: 'block' }}>
+                            {selectedMood === null && <div>Please select one based on your current mood.</div>}
                             {selectedMood === "yellow" && <div><h5 class="font-mono" style={{ color: "#FFD60A" }}>Happy</h5><p class="text-sm">Feeling enjoyable and fun? Join the conversation with others in the community to spread your happiness!</p></div>}
                             {selectedMood === "blue" && <div><h5 class="font-mono" style={{ color: "#48CAE4" }}>Serenity</h5><p class="text-sm">Chill, calm & peaceful. Immerse yourself in the unexpected conversation with someone!</p></div>}
                             {selectedMood === "purple" && <div><h5 class="font-mono" style={{ color: "#DEC0F1" }}>Sad</h5><p class="text-sm">Sad & bitter. Life's treating you bad today? Let the conversation heal your sadness and release you from misery!</p></div>}
