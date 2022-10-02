@@ -5,6 +5,8 @@ import { ChatPage } from './pages/ChatPage';
 import { ChatPage2 } from './pages/ChatPage copy';
 import {useState} from 'react'
 
+import IMAGE from "./assets/LOGO.png"
+
 function App() {
 
   const [userName, setUserName] = useState('')

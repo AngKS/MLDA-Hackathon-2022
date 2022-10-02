@@ -38,3 +38,15 @@ settings/
 /Sentiment/model_checkpoint/
 /Sentiment/deployment/
 heroku/node_modules
+/model-dev/Sentiment/model_saved/
+/model-dev/Sentiment/model_checkpoint/
+/model-dev/Sentiment/deployment/
+/Sentiment/aclImdb/
+Sentiment/Data/IMDB Dataset.csv
+*.txt
+Sentiment/aclImdb_v1.tar.gz
+/model-dev/Sentiment/model_weights/
+/model-dev/Sentiment/deployment/
+/model-dev/Sentiment/model_checkpoint/
+/model-dev/Sentiment/model_saved/
+/model-dev/Sentiment/model_weights/
