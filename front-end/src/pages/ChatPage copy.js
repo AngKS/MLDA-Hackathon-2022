@@ -131,7 +131,6 @@ function ChatPage2() {
       );
       
 
-
     return (
         <div class='h-screen'>
             <TopBar current_page='Chat' />

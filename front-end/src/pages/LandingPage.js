@@ -9,7 +9,7 @@ import { TopBar } from "../common/Topbar";
 import TextField from '@mui/material/TextField';
 
 
-function LandingPage({userMood, username, setUserMood, setUsername}) {
+function LandingPage({userMood, username, setUserMood, setUsername, toxicity, setToxicity}) {
     const [selectedMood, setSelectedMood] = useState(null);
     const [isNameVisible, setIsNameVisible] = useState(false);
     const [isMoodVisible, setIsMoodVisible] = useState(false);
@@ -43,7 +43,10 @@ function LandingPage({userMood, username, setUserMood, setUsername}) {
     return (
         <div>
             <TopBar current_page="Chat" />
-            <div class="grid grid-rows-1 grid-flow-col gap-4 w-3/5 mx-auto">
+            <div class="grid grid-rows-1 grid-flow-col gap-4 w-3/5 mx-auto relative">
+                <div className={`${toxicity != null ? "absolute" : "hidden"} px-3 py-2.5 bg-red-400 bottom-0 left-[50%] text-white rounded-lg`} onClick={() => {
+                    setToxicity(null)
+                }}>You have been removed from the Chat due to suspected {toxicity} activity.</div>
                 <div class="row-span-1 col-span-1">
                     <div class="grid grid-rows-4 grid-flow-col gap-4">
                         <div class="row-span-1  w-full">

@@ -9,13 +9,14 @@ function App() {
 
   const [userName, setUserName] = useState('')
   const [selectedMood, setSelectedMood] = useState('')
+  const [toxicity, setToxicity] = useState(null)
 
   return (
     <Router>
       <div className="App">
         <Routes>
-          <Route path="/" element={<LandingPage username={userName} setUsername={setUserName} userMood={selectedMood} setUserMood={setSelectedMood}/>} />
-          <Route path="/chatroom" element={<ChatPage username={userName} setUsername={setUserName} userMood={selectedMood} setUserMood={setSelectedMood} />} />
+          <Route path="/"  toxicity={toxicity} setToxicity={setToxicity} element={<LandingPage username={userName} setUsername={setUserName} userMood={selectedMood} setUserMood={setSelectedMood}/>} />
+          <Route path="/chatroom" toxicity={toxicity} setToxicity={setToxicity}  element={<ChatPage username={userName} setUsername={setUserName} userMood={selectedMood} setUserMood={setSelectedMood} />} />
           <Route path="/chatroom2" element={<ChatPage2 username={userName} setUsername={setUserName} userMood={selectedMood} setUserMood={setSelectedMood} />} />
         </Routes>
 
