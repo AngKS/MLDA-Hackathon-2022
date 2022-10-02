@@ -1,0 +1,40 @@
+#gray-circle {
+    width: 50px;
+    height: 50px;
+    -webkit-border-radius: 25px;
+    -moz-border-radius: 25px;
+    border-radius: 25px;
+    background: gray;
+}
+
+#blue-circle {
+    width: 50px;
+    height: 50px;
+    -webkit-border-radius: 25px;
+    -moz-border-radius: 25px;
+    border-radius: 25px;
+    background: #48cae4;
+}
+
+#yellow-circle {
+    width: 50px;
+    height: 50px;
+    -webkit-border-radius: 25px;
+    -moz-border-radius: 25px;
+    border-radius: 25px;
+    background: #ffd60a;
+}
+
+#purple-circle {
+    width: 50px;
+    height: 50px;
+    -webkit-border-radius: 25px;
+    -moz-border-radius: 25px;
+    border-radius: 25px;
+    background: #DEC0F1;
+}
+
+#purple-circle:hover, #yellow-circle:hover, #blue-circle:hover, #gray-circle:hover {
+    cursor: pointer;
+    box-shadow: 0 0 11px rgba(33,33,33,.5);
+}
