@@ -7,10 +7,10 @@ function EnterName({ setUserName }) {
     }
 
     return (
-        <div class="grid grid-rows-2 grid-flow-col pt-7">
-            <span class="row-span-1 ...">Enter Name</span>
-            <div class="row-span-1 ...">
-                <TextField size="small" variant="outlined" required onChange={handleChange}/>
+        <div class="flex flex-col pt-7 w-full gap-2">
+            <span class="">Enter Name</span>
+            <div class="w-full">
+                <TextField className="w-full" size="small" variant="outlined" required onChange={handleChange}/>
             </div>
         </div>
     )
