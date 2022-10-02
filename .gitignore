@@ -41,3 +41,4 @@ settings/
 Sentiment/Data/IMDB Dataset.csv
 *.txt
 Sentiment/aclImdb_v1.tar.gz
+/Sentiment/model_weights/
