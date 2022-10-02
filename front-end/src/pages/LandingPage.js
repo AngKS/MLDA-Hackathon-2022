@@ -3,6 +3,7 @@ import { SelectMood } from "../components/landing/Mood";
 import { EnterName } from "../components/landing/Name";
 import GIF from "../assets/people-chatting.gif";
 import Button from "@mui/material/Button";
+import "../styles/landing.css";
 
 function LandingPage() {
     const [userName, setUserName] = useState(null);
@@ -43,7 +44,7 @@ function LandingPage() {
                 </div>
             </div>
             <div class="row-span-1 col-span-1">
-                <img src={GIF} alt="gif" />
+                <img class="chat_img" src={GIF} alt="gif" />
             </div>
         </div>
     )

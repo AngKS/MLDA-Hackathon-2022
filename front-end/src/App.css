@@ -2,3 +2,8 @@
     height: 70px;
     width: 90px;
 }
+
+body {
+    margin: 20px auto !important;
+    width: 60%;
+}
