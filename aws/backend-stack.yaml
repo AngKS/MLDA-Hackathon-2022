@@ -71,30 +71,13 @@ Resources:
       IntegrationUri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${SendMessageFunction.Arn}/invocations
 
 
-  SendRoute:
-    Type: AWS::ApiGatewayV2::Route
-    Properties:
-      ApiId: !Ref ServerWebSocketApi
-      RouteKey: sendMessage
-      AuthorizationType: NONE
-      OperationName: SendMessageRoute
-      Target: !Join ["/", ['integrations', !Ref SendMessageIntegration]]
-
-  SendMessageIntegration:
-    Type: AWS::ApiGatewayV2::Integration
-    Properties:
-      ApiId: !Ref ServerWebSocketApi
-      Description: Send message to socket connection
-      IntegrationType: AWS_PROXY
-      IntegrationUri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${SendMessageFunction.Arn}/invocations
-
-
   # ========== Lambdas =================
-
-  SendMessageFunction:
-    Type: AWS::Serverless::Function
+  GoodMainServer:
+    Type: AWS::Serverless:Function
     Properties:
-      FunctionName: !Join ["-", [!Ref AppName, "Main-Server"]]
+      FunctionName:
+        !Join ["-", [!Ref AppName, "Main-Server"]]
+
       Description: "The core server of the application"
       CodeUri: ../back-end/mainCallback
       Handler: app.goodVibesMainHandler
@@ -150,3 +133,19 @@ Resources:
       Description: Prod Stage
       DeploymentId: !Ref Deployment
       ApiId: !Ref ServerWebSocketApi
+
+  
+  # HateSpeechModelFunction:
+  #   Type: AWS::Serverless::Function
+  #   Properties:
+  #     CodeUri: ../model-dev/hate-speech
+  #     Handler: app.handler
+  #     Runtime: python3.9
+  #     Architectures:
+  #       - x86_64
+  #     Events:
+  #       InferenceEndpoint:
+  #         Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+  #         Properties:
+  #           Path: /predict
+  #           Method: post
