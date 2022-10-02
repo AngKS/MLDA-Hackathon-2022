@@ -26,6 +26,10 @@ function LandingPage() {
         }
     }
 
+    const goToSecond = () => {
+        console.log('Next Page')
+    }
+
     return (
         <div class="grid grid-rows-1 grid-flow-col gap-4">
             <div class="row-span-1 col-span-1">
@@ -40,8 +44,10 @@ function LandingPage() {
                     </div>
                     <div class="row-span-1 ...">
                         <Button variant="outlined" onClick={handleSubmit}>Enter Chat Room</Button>
+                        <Button variant="outlined" onClick={goToSecond}>Second Page UI</Button>
                     </div>
                 </div>
+
             </div>
             <div class="row-span-1 col-span-1">
                 <img class="chat_img" src={GIF} alt="gif" />
