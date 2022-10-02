@@ -34,11 +34,15 @@ settings/
 /Sentiment/Data/Twitter/
 /Sentiment/Data/consolidated/
 /Sentiment/Data/by_category/
-/Sentiment/model_saved/
-/Sentiment/model_checkpoint/
-/Sentiment/deployment/
+/model-dev/Sentiment/model_saved/
+/model-dev/Sentiment/model_checkpoint/
+/model-dev/Sentiment/deployment/
 /Sentiment/aclImdb/
 Sentiment/Data/IMDB Dataset.csv
 *.txt
 Sentiment/aclImdb_v1.tar.gz
-/Sentiment/model_weights/
+/model-dev/Sentiment/model_weights/
+/model-dev/Sentiment/deployment/
+/model-dev/Sentiment/model_checkpoint/
+/model-dev/Sentiment/model_saved/
+/model-dev/Sentiment/model_weights/
