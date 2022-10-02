@@ -12,15 +12,34 @@
 
 .red {
     background-color: red;
-    height:1000px
 
 
 }
 
-.blue {
-    background-color: green;
-    height:1000px
-
+.chat {
+    background-color: #ededed;
+    /* border-width: 5px; */
+    /* border-color: #e9ecef; */
 
 }
 
+.inputArea {
+    
+}
+
+.textBox {
+    -webkit-appearance: none;
+    outline: none;
+    /* margin:20px; */
+    padding:10px;
+    border-radius: 10px;
+    width:80%;
+}
+
+.sendButton {
+    background-color:#5a189a;
+    padding:9px;
+    color: white;
+    border-radius: 10px;
+    width:20%
+}
