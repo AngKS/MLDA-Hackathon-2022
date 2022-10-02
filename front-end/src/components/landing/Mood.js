@@ -20,43 +20,39 @@ function SelectMood({ setSelectedMood }) {
 
     const handleClickGray = (event) => {
         setSelectedMood("gray");
-        event.target.style.boxShadow = "0 0 11px rgba(33,33,33,.5)";
     }
     const handleClickBlue = (event) => {
         setSelectedMood("blue");
-        event.target.style.boxShadow = "0 0 11px rgba(33,33,33,.5)";
     }
     const handleClickYellow = (event) => {
         setSelectedMood("yellow");
-        event.target.style.boxShadow = "0 0 11px rgba(33,33,33,.5)";
     }
     const handleClickPurple = (event) => {
         setSelectedMood("purple");
-        event.target.style.boxShadow = "0 0 11px rgba(33,33,33,.5)";
     }
 
     return (
-        <div class="grid grid-rows-2 grid-flow-col gap-4">
-            <span class="row-span-1 ...">Select your current mood</span>
+        <div class="grid grid-rows-2 grid-flow-col gap-4"  style={{ height: "80px" }}>
+            <span class="row-span-1 ..." >Select your current mood</span>
             <div class="row-span-1 ...">
-                <div class="grid grid-rows-1 grid-flow-col">
+                <div class="grid grid-rows-1 grid-flow-col" >
                     <div class="col-span-1 ...">
-                        <DescriptionTooltip placement="top" title="Disappointed? Upset? Spiritless? Join the conversation and let someone cheer you up!">
-                            <div id="gray-circle" class="circle" onClick={handleClickGray}></div>
+                        <DescriptionTooltip placement="top" title="Feeling enjoyable and fun? Join the conversation with others in the communitiiy to spread you happiness!">
+                            <div className="emoji" onClick={handleClickYellow}><span>😄</span></div>
                         </DescriptionTooltip>
                     </div>
                     <div class="col-span-1 ...">
                         <DescriptionTooltip placement="top" title="Chill, calm & peaceful. Immerse yourself in the unexpected conversation with someone.">
-                            <div id="blue-circle" class="circle" onClick={handleClickBlue}></div>
+                            <div className="emoji" onClick={handleClickBlue}><span>🙂</span></div>
                         </DescriptionTooltip>
                     </div>
                     <div class="col-span-1 ...">
-                        <DescriptionTooltip placement="top" title="Feeling enjoyable and fun? Join the conversation with others in the communitiiy to spread you happiness!">
-                            <div id="yellow-circle" class="circle" onClick={handleClickYellow}></div>
+                        <DescriptionTooltip placement="top" title="Disappointed? Upset? Spiritless? Join the conversation and let someone cheer you up!">
+                            <div className="emoji" onClick={handleClickGray}><span>😣</span></div>
                         </DescriptionTooltip>
                     </div>
                     <DescriptionTooltip placement="top" title="Sad & Bitter. Life's treating you bad today? Let the conversation heal your sadness and release you from misery!">
-                        <div id="purple-circle" class="circle" onClick={handleClickPurple}></div>
+                        <div className="emoji" onClick={handleClickPurple}><span>😫</span></div>
                     </DescriptionTooltip>
                 </div>
             </div>
